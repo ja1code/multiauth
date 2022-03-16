@@ -1,0 +1,14 @@
+{
+  "name": "multiauth",
+  "version": "0.0.1",
+  "main": "index.js",
+  "repository": "https://github.com/ja1code/multiauth",
+  "author": "ja1cod",
+  "license": "MIT",
+  "private": false,
+  "dependencies": {
+    "data-store": "^4.0.3",
+    "electron": "^17.1.2",
+    "puppeteer-core": "^13.5.1"
+  }
+}
