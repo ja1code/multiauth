@@ -1,43 +1,21 @@
 const puppeteer = require('puppeteer-core')
-const store = require('data-store')({ path: process.cwd() + '/config.json' });
-const fs = require('fs')
-
-async function checkBrowser() {
-  if (!store.get('browser')) {
-    return await downloadBrowser()
-  }
-}
-
-async function downloadBrowser() {
-  fs.mkdirSync('./browser-bin')
-
-  const browserFetcher = puppeteer.createBrowserFetcher({
-    path: "./browser-bin/"
-  })
-
-  const rev = await browserFetcher.download('961656')
-
-  store.set('browser', rev.folderPath)
-}
+const utils = require('./utils')
 
 async function start (profile) {
-  await checkBrowser()
+  await utils.checkBrowser()
 
   const browser = await puppeteer.launch({
     headless: false,
     ignoreDefaultArgs: ["--enable-automation"],
     userDataDir: `./profiles/${profile}`,
-    executablePath: `${store.get('browser')}\\chrome-win\\chrome.exe`,
+    executablePath: utils.execPath(),
     defaultViewport: null
   })
 
   browser.on('targetcreated', async target => {
     const p = await (target.page())
-    if (p) p.setUserAgent('Fake')
+    if (p) p.setUserAgent('Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/99.0.4844.82 Safari/537.36')
   })
-
-  const page = await browser.newPage()
-  await page.goto('https://google.com')
 }
 
 module.exports = { start }

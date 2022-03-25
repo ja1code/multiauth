@@ -2,4 +2,9 @@ const browser = require('./browser/main')
 
 const profile = process.argv[2]
 
-browser.start(profile || 'profile1')
+try {
+  browser.start(profile || 'demo')
+} catch (error) {
+  console.log(error)
+  process.abort()
+}
